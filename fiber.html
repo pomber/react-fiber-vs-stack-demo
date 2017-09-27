@@ -21,6 +21,36 @@
     <script src="js/react-dom-fiber.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
     <script type="text/babel">
+    (function(frames = 200, colWidth = "2px") {
+  const container = document.createElement("div");
+  container.style.position = "fixed";
+  container.style.right = "10px";
+  container.style.top = "0";
+  document.body.appendChild(container);
+  for (let i = 0; i < frames; i++) {
+    const fc = document.createElement("div");
+    fc.style.background = "red";
+    fc.style.width = colWidth;
+    fc.style.display = "inline-block";
+    fc.style.verticalAlign = "top";
+    container.appendChild(fc);
+    fc.style.height = "16px";
+  }
+  let last = performance.now();
+  let i = 0;
+  function refresh() {
+    const now = performance.now();
+    const diff = now - last;
+    last = now;
+    container.childNodes[i % frames].style.background = "red";
+    i++;
+    container.childNodes[i % frames].style.background = "black";
+    container.childNodes[i % frames].style.height = diff + "px";
+    requestAnimationFrame(refresh);
+  }
+  requestAnimationFrame(refresh);
+})();
+
       var dotStyle = {
         position: 'absolute',
         background: '#61dafb',
